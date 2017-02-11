@@ -1,4 +1,9 @@
 ArrayList<Game> games;
+Mode mode;
+int modeCount;
+enum Mode {
+  PTS,STL,RB,FGP
+};
 
 void setup() {
   games = readGameTable("dirk98-99.csv",true);
@@ -22,16 +27,63 @@ void setup() {
   games.addAll(readGameTable("dirk16-17.csv",true));
   println(games.size());
   size(1000,600);
+  modeCount = 0;
+  mode = Mode.PTS;
 
 }
 
 void draw() {
-    background(0);
-  for(int i = 0; i < games.size(); i++) {
-    //games.get(i).displayPointsMinutes(i,games.size(),color(0,255,0),color(255,0,0),60f,300f); 
-    //games.get(i).displaySteals(i,games.size(),color(0,255,0),color(255,0,0),8f,300f);
-    games.get(i).displayRebounds(i,games.size(),color(0,255,0),color(255,0,0),30f,100f);
+  background(0);
+  switch(mode) {
+    case PTS: 
+      drawPoints();
+      break;
+    case STL:
+      drawSteals();
+      break;
+    case RB:
+      drawRebounds();
+      break;
+    case FGP:
+      drawFGP();
+      break;
   }
+}
+
+void drawPoints() {
+  textSize(20);
+  textAlign(CENTER);
+  text("Dirk's Points",width/2,25f);
+  for(int i = 0; i < games.size(); i++) {
+    games.get(i).displayPointsMinutes(i,games.size(),color(0,255,0),color(255,0,0),60f,300f); 
+  }  
+}
+
+void drawSteals() {
+  textSize(20);
+  textAlign(CENTER);
+  text("Dirk's Steals",width/2,25f);
+  for(int i = 0; i < games.size(); i++) {
+    games.get(i).displaySteals(i,games.size(),color(0,255,0),color(255,0,0),8f,300f);
+  }   
+}
+
+void drawFGP() {
+  textSize(20);
+  textAlign(CENTER);
+  text("Dirk's Field Goal Percentage",width/2,25f);
+  for(int i = 0; i < games.size(); i++) {
+    games.get(i).displayFGPercentage(i,games.size(),color(0,255,0),color(255,0,0),100f);
+  }
+}
+
+void drawRebounds() {
+  textSize(20);
+  textAlign(CENTER);
+  text("Dirk's Rebounds",width/2,25f);
+  for(int i = 0; i < games.size(); i++) {
+    games.get(i).displayRebounds(i,games.size(),color(0,255,0),color(255,0,0),30f,100f);
+  }    
 }
 
 ArrayList<Game> readGameTable(String str, boolean header) {
@@ -74,7 +126,11 @@ ArrayList<Game> readGameTable(String str, boolean header) {
     Game add = new Game(win,started,minutes,FG,FGA,TP,TPA,FT,FTA,ORB,DRB,AST,STL,BLK,TOV,PF,PTS);
     ret.add(add);
   }
- return ret;
-  
-  
+  return ret; 
+}
+
+void mousePressed() {
+  modeCount++;
+  modeCount = modeCount % Mode.values().length;
+  mode = Mode.values()[modeCount];  
 }

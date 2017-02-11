@@ -69,7 +69,7 @@ class Game {
  
  float fieldGoalPercentage() {
    println("FG: " + FG + " FGA: " + FGA);
-   return ((float)FG/FGA); 
+   return (FG/((float)FGA)); 
  }
  
  float points() {
@@ -124,6 +124,19 @@ class Game {
     }
     float x = map(gameCount, 0f, maxGameCount, 10f, width+10f);
     float y = height-map((DRB+ORB),0f,maxY,0,height);
+    float rad = map(PTS,0f,60f,0f,maxRadius);
+    ellipse(x,y,sqrt(rad),sqrt(rad));
+  }
+  
+  void displayFGPercentage(float gameCount, float maxGameCount, color winColor, color lossColor, float maxRadius) {
+    ellipseMode(CENTER);
+    if(win) {
+      fill(winColor);
+    } else {
+      fill(lossColor);
+    }
+    float x = map(gameCount, 0f, maxGameCount, 10f, width+10f);
+    float y = height-map(fieldGoalPercentage(),0f,1f,0,height);
     float rad = map(PTS,0f,60f,0f,maxRadius);
     ellipse(x,y,sqrt(rad),sqrt(rad));
   }
