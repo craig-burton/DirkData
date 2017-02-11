@@ -2,7 +2,7 @@ ArrayList<Game> games;
 Mode mode;
 int modeCount;
 enum Mode {
-  PTS,STL,RB,FGP
+  PTS,PTSPM,STL,RB,FGP,PARALLEL;
 };
 
 void setup() {
@@ -25,11 +25,9 @@ void setup() {
   games.addAll(readGameTable("dirk14-15.csv",true));
   games.addAll(readGameTable("dirk15-16.csv",true));
   games.addAll(readGameTable("dirk16-17.csv",true));
-  println(games.size());
   size(1000,600);
   modeCount = 0;
   mode = Mode.PTS;
-
 }
 
 void draw() {
@@ -37,6 +35,9 @@ void draw() {
   switch(mode) {
     case PTS: 
       drawPoints();
+      break;
+    case PTSPM:
+      drawPointsPerMin();
       break;
     case STL:
       drawSteals();
@@ -47,20 +48,36 @@ void draw() {
     case FGP:
       drawFGP();
       break;
+    case PARALLEL:
+      break;
   }
 }
 
 void drawPoints() {
   textSize(20);
+  fill(255);
   textAlign(CENTER);
   text("Dirk's Points",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
-    games.get(i).displayPointsMinutes(i,games.size(),color(0,255,0),color(255,0,0),60f,300f); 
+    //games.get(i).displayPoints(i,games.size(),color(0,255,0),color(255,0,0),60f,300f); 
+    games.get(i).display(i,games.size(),color(0,255,0),color(255,0,0),games.get(i).PTS,60f,games.get(i).TP,18f,300f);
+  }  
+}
+
+void drawPointsPerMin() {
+  textSize(20);
+  fill(255);
+  textAlign(CENTER);
+  text("Dirk's Points Per Minute",width/2,25f);
+  for(int i = 0; i < games.size(); i++) {
+    //games.get(i).displayPointsPerMinute(i,games.size(),color(0,255,0),color(255,0,0),1.5f,50f); 
+    games.get(i).display(i,games.size(),color(0,255,0),color(255,0,0),games.get(i).pointsPerMinute(),1.5f,games.get(i).PTS,53f,75f);
   }  
 }
 
 void drawSteals() {
   textSize(20);
+  fill(255);
   textAlign(CENTER);
   text("Dirk's Steals",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
@@ -70,6 +87,7 @@ void drawSteals() {
 
 void drawFGP() {
   textSize(20);
+  fill(255);
   textAlign(CENTER);
   text("Dirk's Field Goal Percentage",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
@@ -79,6 +97,7 @@ void drawFGP() {
 
 void drawRebounds() {
   textSize(20);
+  fill(255);
   textAlign(CENTER);
   text("Dirk's Rebounds",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
@@ -89,14 +108,12 @@ void drawRebounds() {
 ArrayList<Game> readGameTable(String str, boolean header) {
   Table games;
   ArrayList<Game> ret = new ArrayList<Game>();
-  println("Reading: " + str);
   if(header) {
     games = loadTable(str, "header");
   } else {
     games = loadTable(str);
   }
   int rows = games.getRowCount();
-  println("Rows: " + rows);
   for(int i = 0; i<rows; i++) {
     String winString = games.getString(i,7);
     boolean win = (split(winString,' ')[0]).equals("W");

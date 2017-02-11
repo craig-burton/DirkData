@@ -68,7 +68,6 @@ class Game {
  }
  
  float fieldGoalPercentage() {
-   println("FG: " + FG + " FGA: " + FGA);
    return (FG/((float)FGA)); 
  }
  
@@ -88,7 +87,7 @@ class Game {
    println("Win: " + win + " Started: " +started+"FTP :" + freeThrowPercentage() + " Rebounds: " + totalRebounds() + " PPM: " + pointsPerMinute() + " TPP: " +threePointPercentage() + " FGP: " + fieldGoalPercentage() + " Efficiency: " + efficiency());
  }
  
- void displayPointsMinutes(float gameCount, float maxGameCount, color winColor, color lossColor, float maxY, float maxRadius) {
+ void displayPoints(float gameCount, float maxGameCount, color winColor, color lossColor, float maxY, float maxRadius) {
    ellipseMode(CENTER);
    if(win) {
      fill(winColor);
@@ -98,6 +97,19 @@ class Game {
    float x = map(gameCount,0f,maxGameCount,10f,width+10);
    float y = height-map(PTS,0,maxY,0,height);
    float rad = map(TP,0,18,0,maxRadius); 
+   ellipse(x,y,sqrt(rad),sqrt(rad));
+ }
+ 
+  void displayPointsPerMinute(float gameCount, float maxGameCount, color winColor, color lossColor, float maxY, float maxRadius) {
+   ellipseMode(CENTER);
+   if(win) {
+     fill(winColor);
+   } else {
+     fill(lossColor);
+   }
+   float x = map(gameCount,0f,maxGameCount,10f,width+10);
+   float y = height-map(PTS/MP,0,maxY,0,height);
+   float rad = map(PTS,0,18,0,maxRadius); 
    ellipse(x,y,sqrt(rad),sqrt(rad));
  }
  
@@ -138,6 +150,19 @@ class Game {
     float x = map(gameCount, 0f, maxGameCount, 10f, width+10f);
     float y = height-map(fieldGoalPercentage(),0f,1f,0,height);
     float rad = map(PTS,0f,60f,0f,maxRadius);
+    ellipse(x,y,sqrt(rad),sqrt(rad));
+  }
+  
+  void display(float gameCount, float maxGameCount, color winColor, color lossColor, float yToMap, float maxY, float radToMap, float maxRadMap, float maxRadius) {
+    ellipseMode(CENTER);
+    if(win) {
+      fill(winColor);
+    } else {
+      fill(lossColor);
+    }
+    float x = map(gameCount, 0f, maxGameCount, 10f, width+10f);
+    float y = height-map(yToMap,0f,maxY,0,height);
+    float rad = map(radToMap,0f,maxRadMap,0f,maxRadius);
     ellipse(x,y,sqrt(rad),sqrt(rad));
   }
 };
