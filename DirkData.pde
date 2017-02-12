@@ -1,4 +1,18 @@
+import java.util.*;
+
+//Game arraylist
 ArrayList<Game> games;
+
+//Maximum variables
+//max->Pts,Asts,Thrs,Rbs,Blks
+ArrayList<HashSet<Float>> max;
+ArrayList<Float> ptsmax;
+ArrayList<Float> astmax;
+ArrayList<Float> thrmax;
+ArrayList<Float> rbsmax;
+ArrayList<Float> blkmax;
+
+//Dealing with mode control
 Mode mode;
 int modeCount;
 boolean first;
@@ -31,6 +45,18 @@ void setup() {
   mode = Mode.INTRO;
   first = true;
   noLoop();
+  max = prepMax();
+  ptsmax = new ArrayList<Float>(max.get(0));
+  astmax = new ArrayList<Float>(max.get(1));
+  thrmax = new ArrayList<Float>(max.get(2));
+  rbsmax = new ArrayList<Float>(max.get(3));
+  blkmax = new ArrayList<Float>(max.get(4));
+  java.util.Collections.sort(ptsmax);
+  println("ptsmax : " + ptsmax.get(0) + " " + ptsmax.get(1) + " " + ptsmax.get(2) + " " + ptsmax.get(3) + " " + ptsmax.get(4) + " ");
+  java.util.Collections.sort(astmax);
+  java.util.Collections.sort(thrmax);
+  java.util.Collections.sort(rbsmax);
+  java.util.Collections.sort(blkmax);
 }
 
 void draw() {
@@ -108,7 +134,7 @@ void drawPointsPerMin() {
   fill(color(255));
   float y = map(mouseY,0,height,0,1.6f);
   textSize(15);
-  text("Mouse at: " + (1.6-y) +"points per minute",mouseX,40f);
+  text("Mouse at: " + (1.6-y) +" points per minute",mouseX,40f);
 }
 
 void drawFGP() {
@@ -212,7 +238,109 @@ void drawParallel() {
 void drawMax() {
   textSize(20);
   fill(255);
-  text("Maximums",width/2,25f);
+  text("Maximums",width/2,25f); 
+  
+  //Pts,Asts,Tps,Rbs,Blks
+  ellipseMode(CENTER);
+  float maxRad =150f;
+  noStroke();
+  text("Threes",100,50);
+  drawCircsMax(100,thrmax,maxRad,8f,color(0,100,255));
+ 
+  fill(255);
+  text("Assits",375,50);
+  drawCircsMax(375,astmax,maxRad,12f,color(255,0,0));
+  
+  fill(255);
+  text("Points",650f,50f);
+  drawCircsMax(650,ptsmax,maxRad,53f,color(0,255,0));
+
+  fill(255);
+  text("Rebounds",925,50);
+  drawCircsMax(925,rbsmax,maxRad,23f,color(255,0,255));
+  
+  fill(255);
+  text("Blocks",1200,50);
+  drawCircsMax(1200,blkmax,maxRad,7f,color(255,255,0));
+  
+}
+
+void drawCircsMax(float x, ArrayList<Float> m,float rad, float mapTo, color col) {
+  drawCircMax(x,170,m.get(4),mapTo,rad,col);
+  drawCircMax(x,290,m.get(3),mapTo,rad,col);
+  drawCircMax(x,410,m.get(2),mapTo,rad,col);
+  drawCircMax(x,530,m.get(1),mapTo,rad,col);
+  drawCircMax(x,650,m.get(1),mapTo,rad,col);
+}
+
+void drawCircMax(float x, float y, float val, float maxMap, float maxRad, color fillCol) {
+  ellipseMode(CENTER);
+  fill(fillCol);
+  float r = map(val,0f,maxMap,0f,maxRad);
+  ellipse(x,y,r,r);
+  fill(255);
+  textAlign(CENTER);
+  textSize(15);
+  fill(0);
+  text(str(val),x,y);
+}
+
+ArrayList<HashSet<Float>> prepMax() {
+  ArrayList<Float> points = new ArrayList<Float>(games.size());
+  ArrayList<Float> assists = new ArrayList<Float>(games.size());
+  ArrayList<Float> threes = new ArrayList<Float>(games.size());
+  ArrayList<Float> rebounds = new ArrayList<Float>(games.size());
+  ArrayList<Float> blocks = new ArrayList<Float>(games.size());
+  for(int i = 0; i < games.size(); i++) {
+    Game g = games.get(i);
+    points.add(g.PTS);
+    assists.add(g.AST);
+    threes.add(g.TP);
+    rebounds.add(g.totalRebounds());
+    blocks.add(g.BLK);
+  }
+  java.util.Collections.sort(points);
+  java.util.Collections.sort(assists);
+  java.util.Collections.sort(threes);
+  java.util.Collections.sort(rebounds);
+  java.util.Collections.sort(blocks);
+  HashSet<Float> ptsmax = new HashSet<Float>();
+  HashSet<Float> astmax = new HashSet<Float>();
+  HashSet<Float> thrmax = new HashSet<Float>();
+  HashSet<Float> rbsmax = new HashSet<Float>();
+  HashSet<Float> blkmax = new HashSet<Float>();
+  int i = games.size()-1;
+  while(ptsmax.size()<=5 && i >=0) {
+    ptsmax.add(points.get(i)); 
+    i--;
+  }
+  i = games.size()-1;
+  while(astmax.size()<=5 && i >=0) {
+    astmax.add(assists.get(i));  
+    i--;
+  }
+  i = games.size()-1;
+  while(thrmax.size()<=5 && i >=0) {
+    thrmax.add(threes.get(i));  
+    i--;
+  }
+  i = games.size()-1;
+  while(rbsmax.size()<=5 && i >=0) {
+    rbsmax.add(rebounds.get(i));  
+    i--;
+  }
+  i = games.size()-1;
+  while(blkmax.size()<=5 && i >=0) {
+    blkmax.add(blocks.get(i)); 
+    i--;
+  }
+  ArrayList<HashSet<Float>> ret = new ArrayList<HashSet<Float>>();
+  ret.add(ptsmax);
+  ret.add(astmax);
+  ret.add(thrmax);
+  ret.add(rbsmax);
+  ret.add(blkmax);
+  return ret;
 }
 
 ArrayList<Game> readGameTable(String str, boolean header) {
