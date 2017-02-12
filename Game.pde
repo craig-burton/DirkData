@@ -109,11 +109,12 @@ class Game {
    }
    float x = map(gameCount,0f,maxGameCount,10f,width+10);
    float y = height-map(PTS/MP,0,maxY,0,height);
-   float rad = map(PTS,0,18,0,maxRadius); 
+   float rad = map(PTS,0,60f,0,maxRadius); 
    ellipse(x,y,sqrt(rad),sqrt(rad));
  }
  
  void displaySteals(float gameCount, float maxGameCount, color winColor, color lossColor, float maxY, float maxRadius) {
+    if(STL==Float.NaN) {return;}
     ellipseMode(CENTER);
     if(win) {
       fill(winColor);
@@ -152,6 +153,34 @@ class Game {
     float rad = map(PTS,0f,60f,0f,maxRadius);
     ellipse(x,y,sqrt(rad),sqrt(rad));
   }
+  
+  void displayFTPercentage(float gameCount, float maxGameCount, color winColor, color lossColor, float maxRadius) {
+    ellipseMode(CENTER);
+    if(win) {
+      fill(winColor);
+    } else {
+      fill(lossColor);
+    }
+    float x = map(gameCount,0f,maxGameCount,10f,width+10f);
+    float y = height-map(freeThrowPercentage(),0f,1.2f,0,height);
+    float rad = map(PTS,0f,60f,0f,maxRadius);
+    ellipse(x,y,sqrt(rad),sqrt(rad));
+    
+  }
+  
+  void displayTPPercentage(float gameCount, float maxGameCount, color winColor, color lossColor, float maxRadius) {
+    ellipseMode(CENTER);
+    if(win) {
+      fill(winColor);
+    } else {
+      fill(lossColor);
+    }
+    float x = map(gameCount,0f,maxGameCount,10f,width+10f);
+    float y = height-map(threePointPercentage(),0f,1.2f,0,height);
+    float rad = map(PTS,0f,60f,0f,maxRadius);
+    ellipse(x,y,sqrt(rad),sqrt(rad));
+    
+  }  
   
   void display(float gameCount, float maxGameCount, color winColor, color lossColor, float yToMap, float maxY, float radToMap, float maxRadMap, float maxRadius) {
     ellipseMode(CENTER);

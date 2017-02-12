@@ -1,8 +1,9 @@
 ArrayList<Game> games;
 Mode mode;
 int modeCount;
+boolean first;
 enum Mode {
-  PTS,PTSPM,STL,RB,FGP,PARALLEL;
+  INTRO,PTS,PTSPM,RB,FGP,FTP,TPP,PARALLEL,MAX;
 };
 
 void setup() {
@@ -25,22 +26,29 @@ void setup() {
   games.addAll(readGameTable("dirk14-15.csv",true));
   games.addAll(readGameTable("dirk15-16.csv",true));
   games.addAll(readGameTable("dirk16-17.csv",true));
-  size(1000,600);
+  size(1300,700);
   modeCount = 0;
-  mode = Mode.PTS;
+  mode = Mode.INTRO;
+  first = true;
+  noLoop();
 }
 
 void draw() {
   background(0);
   switch(mode) {
+    case INTRO:
+      if(first) {
+        drawIntro();
+        first = false;
+      } else {
+        mode = Mode.PTS;
+      }
+      break;
     case PTS: 
       drawPoints();
       break;
     case PTSPM:
       drawPointsPerMin();
-      break;
-    case STL:
-      drawSteals();
       break;
     case RB:
       drawRebounds();
@@ -48,20 +56,44 @@ void draw() {
     case FGP:
       drawFGP();
       break;
+    case FTP:
+      drawFTP();
+      break;
+    case TPP:
+      drawTPP();
+      break;
     case PARALLEL:
+      drawParallel();
+      break;
+    case MAX:
+      drawMax();
       break;
   }
+}
+
+void drawIntro() {
+  textSize(30);
+  fill(255);
+  textAlign(CENTER);
+  text("This is a visualization of Dirk Novitzki's career data, written by Craig Burton",width/2,200f);
+  textSize(25);
+  text("Click to move through each different graph",width/2,300f);
+  text("The scatterplot's radii are scaled by Dirk's points unless otherwise specified",width/2,350f);
 }
 
 void drawPoints() {
   textSize(20);
   fill(255);
   textAlign(CENTER);
-  text("Dirk's Points",width/2,25f);
+  text("Dirk's Points (scaled by three pointers)",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
-    //games.get(i).displayPoints(i,games.size(),color(0,255,0),color(255,0,0),60f,300f); 
-    games.get(i).display(i,games.size(),color(0,255,0),color(255,0,0),games.get(i).PTS,60f,games.get(i).TP,18f,300f);
-  }  
+    games.get(i).displayPoints(i,games.size(),color(0,255,0),color(255,0,0),60f,300f); 
+    //games.get(i).display(i,games.size(),color(0,255,0),color(255,0,0),games.get(i).PTS,60f,games.get(i).TP,18f,300f);
+  }
+  fill(color(255));
+  float y = map(mouseY,0,height,0,60f);
+  textSize(15);
+  text("Mouse at: " + (int)(60-y)+ " points",mouseX,40f);
 }
 
 void drawPointsPerMin() {
@@ -70,19 +102,13 @@ void drawPointsPerMin() {
   textAlign(CENTER);
   text("Dirk's Points Per Minute",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
-    //games.get(i).displayPointsPerMinute(i,games.size(),color(0,255,0),color(255,0,0),1.5f,50f); 
-    games.get(i).display(i,games.size(),color(0,255,0),color(255,0,0),games.get(i).pointsPerMinute(),1.5f,games.get(i).PTS,53f,75f);
-  }  
-}
-
-void drawSteals() {
-  textSize(20);
-  fill(255);
-  textAlign(CENTER);
-  text("Dirk's Steals",width/2,25f);
-  for(int i = 0; i < games.size(); i++) {
-    games.get(i).displaySteals(i,games.size(),color(0,255,0),color(255,0,0),8f,300f);
-  }   
+    games.get(i).displayPointsPerMinute(i,games.size(),color(0,255,0),color(255,0,0),1.5f,100f); 
+    //games.get(i).display(i,games.size(),color(0,255,0),color(255,0,0),games.get(i).pointsPerMinute(),1.6f,games.get(i).PTS,53f,75f);
+  }
+  fill(color(255));
+  float y = map(mouseY,0,height,0,1.6f);
+  textSize(15);
+  text("Mouse at: " + (1.6-y) +"points per minute",mouseX,40f);
 }
 
 void drawFGP() {
@@ -93,6 +119,10 @@ void drawFGP() {
   for(int i = 0; i < games.size(); i++) {
     games.get(i).displayFGPercentage(i,games.size(),color(0,255,0),color(255,0,0),100f);
   }
+  fill(color(255));
+  float y = map(mouseY,0,height,0,1f);
+  textSize(15);
+  text("Mouse at: " + (int)(100-(y*100f))+" percent",mouseX,40f);
 }
 
 void drawRebounds() {
@@ -102,7 +132,87 @@ void drawRebounds() {
   text("Dirk's Rebounds",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
     games.get(i).displayRebounds(i,games.size(),color(0,255,0),color(255,0,0),30f,100f);
-  }    
+  }
+  fill(color(255));
+  float y = map(mouseY,0,height,0,30f);
+  textSize(15);
+  text("Mouse at: " + (int)(30-y)+ " rebounds",mouseX,40f);
+}
+
+void drawFTP() {
+  textSize(20);
+  fill(255);
+  textAlign(CENTER);
+  text("Dirk's Free Throw Percentage",width/2,25f);
+  for(int i = 0; i < games.size(); i++) {
+    games.get(i).displayFTPercentage(i,games.size(),color(0,255,0),color(255,0,0),100f); 
+  }
+  fill(color(255));
+  float y = map(mouseY,0,height,0,1.2f);
+  textSize(15);
+  text("Mouse at: " + (int)(120-(y*100f))+" percent",mouseX,40f);
+}
+
+void drawTPP() {
+  textSize(20);
+  fill(255);
+  textAlign(CENTER);
+  text("Dirk's Three Point Percentage",width/2,25f);
+  for(int i = 0; i < games.size(); i++) {
+    games.get(i).displayTPPercentage(i,games.size(),color(0,255,0),color(255,0,0),100f); 
+  }
+  fill(color(255));
+  float y = map(mouseY,0,height,0,1.2f);
+  textSize(15);
+  text("Mouse at: " + (int)(120-(y*100f))+" percent",mouseX,40f);
+}
+
+void drawParallel() {
+  textSize(20);
+  fill(255);
+  text("Parallel Coordinates",width/2,25f);
+  float winX = 50;
+  float winY = 250;
+  float lossY = 450;
+  float PTSX = 450;
+  float ASTX = 850;
+  float RBX = 1250;
+  //fill(255);
+  stroke(255);
+  strokeWeight(5);
+  textAlign(CENTER);
+  line(winX,50f,winX,650f);
+  text("Win/Loss",winX,675f);
+  line(PTSX,50f,PTSX,650f);
+  text("Points",PTSX,675f);
+  line(ASTX,50f,ASTX,650f);
+  text("Assists",ASTX,675f);
+  line(RBX,50f,RBX,650f);
+  text("Rebounds",RBX,675f);
+  strokeWeight(2);
+  for(int i = 0; i < games.size(); i++) {
+    Game g = games.get(i);
+    float wy;
+    if(g.win) {
+      wy = winY;
+      stroke(color(0,255,0));
+    } else {
+      wy = lossY;
+      stroke(color(255,0,0));
+    }
+    line(winX,wy,PTSX,height-(map(g.PTS,0f,60f,50f,650f)+20f));
+    line(PTSX,height-(map(g.PTS,0f,60f,50f,650f)+20f),ASTX,height-(map(g.AST,0f,13f,50f,650f)+20f));
+    line(ASTX,height-(map(g.AST,0f,13f,50f,650f)+20f),RBX,height-map(g.totalRebounds(),0f,25f,50f,650f));
+    
+  }
+  
+  
+}
+
+void drawMax() {
+  textSize(20);
+  fill(255);
+  text("Maximums",width/2,25f);
 }
 
 ArrayList<Game> readGameTable(String str, boolean header) {
@@ -147,6 +257,7 @@ ArrayList<Game> readGameTable(String str, boolean header) {
 }
 
 void mousePressed() {
+  loop();
   modeCount++;
   modeCount = modeCount % Mode.values().length;
   mode = Mode.values()[modeCount];  
