@@ -89,6 +89,7 @@ class Game {
  
  void displayPoints(float gameCount, float maxGameCount, color winColor, color lossColor, float maxY, float maxRadius) {
    ellipseMode(CENTER);
+   if(PTS==Float.NaN) {return;}
    if(win) {
      fill(winColor);
    } else {
@@ -101,7 +102,8 @@ class Game {
  }
  
   void displayPointsPerMinute(float gameCount, float maxGameCount, color winColor, color lossColor, float maxY, float maxRadius) {
-   ellipseMode(CENTER);
+    if(PTS/MP == Float.NaN || PTS==Float.NaN) {return;}
+    ellipseMode(CENTER);
    if(win) {
      fill(winColor);
    } else {
@@ -112,24 +114,10 @@ class Game {
    float rad = map(PTS,0,60f,0,maxRadius); 
    ellipse(x,y,sqrt(rad),sqrt(rad));
  }
- 
- void displaySteals(float gameCount, float maxGameCount, color winColor, color lossColor, float maxY, float maxRadius) {
-    if(STL==Float.NaN) {return;}
-    ellipseMode(CENTER);
-    if(win) {
-      fill(winColor);
-    } else {
-      fill(lossColor);
-    }
-    float x = map(gameCount, 0f, maxGameCount, 10f, width+10f);
-    float y = height-map(STL,0f,maxY,0,height);
-    float rad = map(PTS,0f,60f,0f,maxRadius);
-    ellipse(x,y,sqrt(rad),sqrt(rad));
-     
-  }
-  
+
   void displayRebounds(float gameCount, float maxGameCount, color winColor, color lossColor, float maxY, float maxRadius) {
     ellipseMode(CENTER);
+    if(totalRebounds()==Float.NaN || PTS==Float.NaN) {return;}
     if(win) {
       fill(winColor);
     } else {
@@ -142,6 +130,7 @@ class Game {
   }
   
   void displayFGPercentage(float gameCount, float maxGameCount, color winColor, color lossColor, float maxRadius) {
+    if(fieldGoalPercentage()==Float.NaN || PTS==Float.NaN) {return;}
     ellipseMode(CENTER);
     if(win) {
       fill(winColor);
@@ -155,6 +144,7 @@ class Game {
   }
   
   void displayFTPercentage(float gameCount, float maxGameCount, color winColor, color lossColor, float maxRadius) {
+    if(freeThrowPercentage()==Float.NaN || PTS==Float.NaN) {return;}
     ellipseMode(CENTER);
     if(win) {
       fill(winColor);
@@ -169,6 +159,7 @@ class Game {
   }
   
   void displayTPPercentage(float gameCount, float maxGameCount, color winColor, color lossColor, float maxRadius) {
+    if(threePointPercentage() == Float.NaN || PTS==Float.NaN) {return;}
     ellipseMode(CENTER);
     if(win) {
       fill(winColor);

@@ -60,6 +60,7 @@ void setup() {
 }
 
 void draw() {
+  noStroke();
   background(0);
   switch(mode) {
     case INTRO:
@@ -114,7 +115,6 @@ void drawPoints() {
   text("Dirk's Points (scaled by three pointers)",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
     games.get(i).displayPoints(i,games.size(),color(0,255,0),color(255,0,0),60f,300f); 
-    //games.get(i).display(i,games.size(),color(0,255,0),color(255,0,0),games.get(i).PTS,60f,games.get(i).TP,18f,300f);
   }
   fill(color(255));
   float y = map(mouseY,0,height,0,60f);
@@ -129,7 +129,6 @@ void drawPointsPerMin() {
   text("Dirk's Points Per Minute",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
     games.get(i).displayPointsPerMinute(i,games.size(),color(0,255,0),color(255,0,0),1.5f,100f); 
-    //games.get(i).display(i,games.size(),color(0,255,0),color(255,0,0),games.get(i).pointsPerMinute(),1.6f,games.get(i).PTS,53f,75f);
   }
   fill(color(255));
   float y = map(mouseY,0,height,0,1.6f);
@@ -226,6 +225,7 @@ void drawParallel() {
       wy = lossY;
       stroke(color(255,0,0));
     }
+    if(g.PTS==Float.NaN || g.AST == Float.NaN || g.totalRebounds() == Float.NaN) {continue;}
     line(winX,wy,PTSX,height-(map(g.PTS,0f,60f,50f,650f)+20f));
     line(PTSX,height-(map(g.PTS,0f,60f,50f,650f)+20f),ASTX,height-(map(g.AST,0f,13f,50f,650f)+20f));
     line(ASTX,height-(map(g.AST,0f,13f,50f,650f)+20f),RBX,height-map(g.totalRebounds(),0f,25f,50f,650f));
