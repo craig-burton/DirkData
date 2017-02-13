@@ -102,7 +102,7 @@ void drawIntro() {
   textSize(30);
   fill(255);
   textAlign(CENTER);
-  text("This is a visualization of Dirk Novitzki's career data, written by Craig Burton",width/2,200f);
+  text("This is a visualization of Dirk Nowitzki's career data, written by Craig Burton",width/2,200f);
   textSize(25);
   text("Click to move through each different graph",width/2,300f);
   text("The scatterplot's radii are scaled by Dirk's points unless otherwise specified",width/2,350f);
