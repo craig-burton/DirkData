@@ -61,7 +61,7 @@ void setup() {
 
 void draw() {
   noStroke();
-  background(0);
+  background(255);
   switch(mode) {
     case INTRO:
       if(first) {
@@ -100,7 +100,7 @@ void draw() {
 
 void drawIntro() {
   textSize(30);
-  fill(255);
+  fill(0);
   textAlign(CENTER);
   text("This is a visualization of Dirk Novitzki's career data, written by Craig Burton",width/2,200f);
   textSize(25);
@@ -110,13 +110,13 @@ void drawIntro() {
 
 void drawPoints() {
   textSize(20);
-  fill(255);
+  fill(0);
   textAlign(CENTER);
   text("Dirk's Points (scaled by three pointers)",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
     games.get(i).displayPoints(i,games.size(),color(0,255,0),color(255,0,0),60f,300f); 
   }
-  fill(color(255));
+  fill(color(0));
   float y = map(mouseY,0,height,0,60f);
   textSize(15);
   text("Mouse at: " + (int)(60-y)+ " points",mouseX,40f);
@@ -124,13 +124,13 @@ void drawPoints() {
 
 void drawPointsPerMin() {
   textSize(20);
-  fill(255);
+  fill(0);
   textAlign(CENTER);
   text("Dirk's Points Per Minute",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
     games.get(i).displayPointsPerMinute(i,games.size(),color(0,255,0),color(255,0,0),1.5f,100f); 
   }
-  fill(color(255));
+  fill(color(0));
   float y = map(mouseY,0,height,0,1.6f);
   textSize(15);
   text("Mouse at: " + (1.6-y) +" points per minute",mouseX,40f);
@@ -138,13 +138,13 @@ void drawPointsPerMin() {
 
 void drawFGP() {
   textSize(20);
-  fill(255);
+  fill(0);
   textAlign(CENTER);
   text("Dirk's Field Goal Percentage",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
     games.get(i).displayFGPercentage(i,games.size(),color(0,255,0),color(255,0,0),100f);
   }
-  fill(color(255));
+  fill(color(0));
   float y = map(mouseY,0,height,0,1f);
   textSize(15);
   text("Mouse at: " + (int)(100-(y*100f))+" percent",mouseX,40f);
@@ -152,13 +152,13 @@ void drawFGP() {
 
 void drawRebounds() {
   textSize(20);
-  fill(255);
+  fill(0);
   textAlign(CENTER);
   text("Dirk's Rebounds",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
     games.get(i).displayRebounds(i,games.size(),color(0,255,0),color(255,0,0),30f,100f);
   }
-  fill(color(255));
+  fill(color(0));
   float y = map(mouseY,0,height,0,30f);
   textSize(15);
   text("Mouse at: " + (int)(30-y)+ " rebounds",mouseX,40f);
@@ -166,13 +166,13 @@ void drawRebounds() {
 
 void drawFTP() {
   textSize(20);
-  fill(255);
+  fill(0);
   textAlign(CENTER);
   text("Dirk's Free Throw Percentage",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
     games.get(i).displayFTPercentage(i,games.size(),color(0,255,0),color(255,0,0),100f); 
   }
-  fill(color(255));
+  fill(color(0));
   float y = map(mouseY,0,height,0,1.2f);
   textSize(15);
   text("Mouse at: " + (int)(120-(y*100f))+" percent",mouseX,40f);
@@ -180,13 +180,13 @@ void drawFTP() {
 
 void drawTPP() {
   textSize(20);
-  fill(255);
+  fill(0);
   textAlign(CENTER);
   text("Dirk's Three Point Percentage",width/2,25f);
   for(int i = 0; i < games.size(); i++) {
     games.get(i).displayTPPercentage(i,games.size(),color(0,255,0),color(255,0,0),100f); 
   }
-  fill(color(255));
+  fill(color(0));
   float y = map(mouseY,0,height,0,1.2f);
   textSize(15);
   text("Mouse at: " + (int)(120-(y*100f))+" percent",mouseX,40f);
@@ -194,7 +194,7 @@ void drawTPP() {
 
 void drawParallel() {
   textSize(20);
-  fill(255);
+  fill(0);
   text("Parallel Coordinates",width/2,25f);
   float winX = 50;
   float winY = 250;
@@ -237,7 +237,7 @@ void drawParallel() {
 
 void drawMax() {
   textSize(20);
-  fill(255);
+  fill(0);
   text("Maximums",width/2,25f); 
   
   //Pts,Asts,Tps,Rbs,Blks
@@ -247,19 +247,19 @@ void drawMax() {
   text("Threes",100,50);
   drawCircsMax(100,thrmax,maxRad,8f,color(0,100,255));
  
-  fill(255);
+  fill(0);
   text("Assits",375,50);
   drawCircsMax(375,astmax,maxRad,12f,color(255,0,0));
   
-  fill(255);
+  fill(0);
   text("Points",650f,50f);
   drawCircsMax(650,ptsmax,maxRad,53f,color(0,255,0));
 
-  fill(255);
+  fill(0);
   text("Rebounds",925,50);
   drawCircsMax(925,rbsmax,maxRad,23f,color(255,0,255));
   
-  fill(255);
+  fill(0);
   text("Blocks",1200,50);
   drawCircsMax(1200,blkmax,maxRad,7f,color(255,255,0));
   
